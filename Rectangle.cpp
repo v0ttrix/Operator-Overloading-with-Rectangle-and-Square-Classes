@@ -1,69 +1,44 @@
-#include <iostream>
 #include "Rectangle.h"
+#include <stdexcept>
 
-using namespace std;
+Rectangle::Rectangle() : length(0.0), width(0.0) {}
 
-//default constructor
-Rectangle::Rectangle()
-{
-    length = 0.00; //sets length to 0
-    width = 0.00;  //sets width to 0
+Rectangle::Rectangle(double length, double width) {
+    if (length < 0 || width < 0) {
+        throw std::invalid_argument("Dimensions must be non-negative");
+    }
+    this->length = length;
+    this->width = width;
 }
 
-//parameterized constructor
-Rectangle::Rectangle(double length, double width)
-{
-    this->length = length; //sets length to given value
-    this->width = width;   //sets width to given value
+void Rectangle::setLength(double length) {
+    if (length < 0) {
+        throw std::invalid_argument("Length must be non-negative");
+    }
+    this->length = length;
 }
 
-//setter for length
-void Rectangle::setLength(double length)
-{
-    this->length = length; //updates length
+void Rectangle::setWidth(double width) {
+    if (width < 0) {
+        throw std::invalid_argument("Width must be non-negative");
+    }
+    this->width = width;
 }
 
-//getter for length
-double Rectangle::getLength() const
-{
-    return length; //returns the length
+std::ostream& operator<<(std::ostream& os, const Rectangle& rect) {
+    os << "Rectangle(length=" << rect.length 
+       << ", width=" << rect.width 
+       << ", area=" << rect.calculateArea() << ")";
+    return os;
 }
 
-//setter for width
-void Rectangle::setWidth(double width)
-{
-    this->width = width; //updates width
+Rectangle operator*(const Rectangle& rect, double scalar) {
+    if (scalar < 0) {
+        throw std::invalid_argument("Scalar must be non-negative");
+    }
+    return Rectangle(rect.length * scalar, rect.width * scalar);
 }
 
-//getter for width
-double Rectangle::getWidth() const
-{
-    return width; //returns the width
-}
-
-//calculates area
-double Rectangle::calculateArea() const
-{
-    return length * width; //returns the area (length * width)
-}
-
-//overload << operator to print the rectangle
-ostream& operator<<(ostream& cout, const Rectangle& rect)
-{
-    cout << "Rectangle : The length = " << rect.getLength()
-        << ", the width = " << rect.getWidth()
-        << " and the area = " << rect.calculateArea();
-    return cout; //returns the stream so it can be chained
-}
-
-//overload * operator to scale the rectangle
-Rectangle operator*(const Rectangle& rect, int num)
-{
-    return Rectangle(rect.length * num, rect.width * num); //returns new rectangle with scaled dimensions
-}
-
-//overload + operator to add two rectangles
-Rectangle operator+(const Rectangle& rect1, const Rectangle& rect2)
-{
-    return Rectangle(rect1.length + rect2.length, rect1.width + rect2.width); //returns new rectangle with added dimensions
+Rectangle operator+(const Rectangle& rect1, const Rectangle& rect2) {
+    return Rectangle(rect1.length + rect2.length, rect1.width + rect2.width);
 }

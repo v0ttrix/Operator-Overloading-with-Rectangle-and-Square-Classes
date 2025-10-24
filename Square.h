@@ -1,29 +1,20 @@
 #pragma once
 #include <iostream>
-using namespace std;
 
-//square class definition
-class Square
-{
+class Square {
 private:
-    double side; //side length of the square
+    double side;
 
 public:
-    Square(); //default constructor
-    Square(double side); //constructor that lets you set the side length when creating an object
+    Square();
+    Square(double side);
 
-    void setSide(double side); //sets the side length
-    double getSide() const; //gets the side length
+    void setSide(double side);
+    double getSide() const { return side; }
 
-    double calculateArea() const; //calculates and returns the area of the square
+    double calculateArea() const { return side * side; }
 
-    //friend functions so these operators can access private variables directly
-    friend ostream& operator<<(ostream& cout, const Square& s1); //overloads << to print the square
-    friend Square operator*(const Square& s1, int scalar); //overloads * to scale the square by a number
-    friend Square operator+(const Square& s1, const Square& s2); //overloads + to add two squares together
+    friend std::ostream& operator<<(std::ostream& os, const Square& square);
+    friend Square operator*(const Square& square, double scalar);
+    friend Square operator+(const Square& square1, const Square& square2);
 };
-
-//function prototypes
-ostream& operator<<(ostream& cout, const Square& s1); //prints the square
-Square operator*(const Square& s1, int scalar); //scales the square by a number
-Square operator+(const Square& s1, const Square& s2); //adds two squares
